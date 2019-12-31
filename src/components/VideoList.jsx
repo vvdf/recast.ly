@@ -4,7 +4,7 @@ var VideoList = (props) => (
   <div className="video-list">
     {props.videos.map( (item) => {
       // console.log(item);
-      return (<VideoListEntry video={item} />);
+      return (<VideoListEntry video={item} setCurrent={props.setCurrent}/>);
     })}
   </div>
 );
