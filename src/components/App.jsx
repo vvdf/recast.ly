@@ -2,6 +2,8 @@ import Search from './Search.js';
 import VideoPlayer from './VideoPlayer.js';
 import VideoList from './VideoList.js';
 import exampleVideoData from '../data/exampleVideoData.js';
+import searchYoutube from '../lib/searchYoutube.js';
+import YOUTUBE_API_KEY from '../config/youtube.js';
 
 class App extends React.Component {
   constructor(props) {
@@ -11,6 +13,23 @@ class App extends React.Component {
       videos: exampleVideoData,
     };
     this.setCurrent = this.setCurrent.bind(this);
+    this.populateState = this.populateState.bind(this);
+    searchYoutube(this.options('sharks'), this.populateState);
+  }
+
+  options(query, max = 5) {
+    return {
+      query: query,
+      max: max,
+      key: YOUTUBE_API_KEY
+    };
+  }
+
+  populateState(videos) {
+    this.setState({
+      currentVideo: videos[0],
+      videos: videos
+    });
   }
 
   setCurrent(video) {
