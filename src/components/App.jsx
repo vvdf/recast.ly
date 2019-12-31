@@ -8,11 +8,12 @@ class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      currentVideo: {}, //exampleVideoData[0],
-      videos: []//exampleVideoData,
+      currentVideo: {},
+      videos: []
     };
     this.setCurrent = this.setCurrent.bind(this);
     this.populateState = this.populateState.bind(this);
+    this.updateQuery = this.updateQuery.bind(this);
   }
 
   options(query, max = 5) {
@@ -24,29 +25,23 @@ class App extends React.Component {
   }
 
   populateState(videos) {
-    //set state should take in a callback in order to run right away
-    //should not change the state directly but should be represented by building a new object based
-    //on current state and prop
-    /*
-    this.setState((state, props) => {
-      return {counter: state.counter + props.step};
-    }) */
-    /*return this.state = */
     this.setState ({
       currentVideo: videos[0],
       videos: videos
     });
   }
 
+  updateQuery(event) {
+    this.props.searchYouTube(this.options(event.target.value), this.populateState);
+  }
+
   setCurrent(video) {
-    //set state should take in a callback in order to run right away
     this.setState({
       currentVideo: video
     });
   }
 
   componentDidMount() {
-    console.log(typeof this.props.searchYouTube);
     if (this.props.searchYouTube !== undefined) {
       this.props.searchYouTube(this.options('sharks'), this.populateState);
     }
@@ -57,7 +52,7 @@ class App extends React.Component {
       <div>
         <nav className="navbar">
           <div className="col-md-6 offset-md-3">
-            <Search />
+            <Search update={this.updateQuery}/>
           </div>
         </nav>
         <div className="row">
