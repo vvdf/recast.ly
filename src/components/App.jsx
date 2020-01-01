@@ -14,6 +14,8 @@ class App extends React.Component {
     this.setCurrent = this.setCurrent.bind(this);
     this.populateState = this.populateState.bind(this);
     this.updateQuery = this.updateQuery.bind(this);
+    this.onChangeDebounced = this.onChangeDebounced.bind(this);
+    this.debouncedUpdate = _.debounce(this.updateQuery, 500);
   }
 
   options(query, max = 5) {
@@ -31,8 +33,12 @@ class App extends React.Component {
     });
   }
 
-  updateQuery(event) {
-    this.props.searchYouTube(this.options(event.target.value), this.populateState);
+  onChangeDebounced(event) {
+    this.debouncedUpdate(event.target.value);
+  }
+
+  updateQuery(query) {
+    this.props.searchYouTube(this.options(query), this.populateState);
   }
 
   setCurrent(video) {
@@ -52,7 +58,7 @@ class App extends React.Component {
       <div>
         <nav className="navbar">
           <div className="col-md-6 offset-md-3">
-            <Search update={this.updateQuery}/>
+            <Search update={this.onChangeDebounced}/>
           </div>
         </nav>
         <div className="row">
